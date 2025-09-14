@@ -1,12 +1,100 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>To-Do List</title>
+  </head>
+  <body>
+    <h2>My To-Do List</h2>
+    <input type="text" id="taskInput" placeholder="Enter a task" />
+    <button onclick="addTask()">Add</button>
+
+    <ul id="taskList"></ul>
+
+    <script>
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+      function showTasks() {
+        const taskList = document.getElementById("taskList");
+        taskList.innerHTML = "";
+        tasks.forEach((task, index) => {
+          taskList.innerHTML += `
+          <li>
+            ${task} 
+            <button onclick="deleteTask(${index})">❌</button>
+          </li>
+        `;
+        });
+      }
+
+      function addTask() {
+        const taskInput = document.getElementById("taskInput");
+        if (taskInput.value.trim() === "") return;
+        tasks.push(taskInput.value);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        taskInput.value = "";
+        showTasks();
+      }
+
+      function deleteTask(index) {
+        tasks.splice(index, 1);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        showTasks();
+      }
+
+      // প্রথমে load করার সময় ডাটা দেখাবে
+      showTasks();
+    </script>
+  </body>
+</html> -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Shopping Cart Example</title>
   </head>
   <body>
-    <button>Add To Local Storage</button>
-    <script src="./js/local-storage.js"></script>
+    <h2>🛒 My Shopping Cart</h2>
+
+    <p id="cartItems">Items in cart: 0</p>
+    <button onclick="addToCart()">Add Item</button>
+
+    <p>
+      <label>Enter Discount Code:</label>
+      <input type="text" id="discountInput" />
+      <button onclick="applyDiscount()">Apply</button>
+    </p>
+    <p id="discountShow">Discount Code: None</p>
+
+    <script>
+      // ----- LocalStorage (Cart Items) -----
+      // শুরুতেই LocalStorage থেকে ডাটা পড়া
+      let cartCount = localStorage.getItem("cartCount") || 0;
+      document.getElementById("cartItems").innerText =
+        "Items in cart: " + cartCount;
+
+      addToCart = () => {
+        cartCount++;
+        localStorage.setItem("cartCount", cartCount);
+        document.getElementById("cartItems").innerText =
+          "Items in cart: " + cartCount;
+      };
+
+      // ----- SessionStorage (Discount Code) -----
+      applyDiscount = () => {
+        let code = document.getElementById("discountInput").value;
+        sessionStorage.setItem("discountCode", code);
+        document.getElementById("discountShow").innerText =
+          "Discount Code: " + code;
+      };
+
+      // রিফ্রেশ করলে Discount Code দেখাবে
+      let savedCode = sessionStorage.getItem("discountCode");
+      if (savedCode) {
+        document.getElementById("discountShow").innerText =
+          "Discount Code: " + savedCode;
+      }
+    </script>
   </body>
 </html>
